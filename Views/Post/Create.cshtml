@@ -1,0 +1,34 @@
+@model PostViewModels.PostCreateViewModel
+
+<div>
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-controller="Post" asp-action="Create">
+
+                <div class="form-group">
+                    <label for="">Select Community : </label>
+                    <select required class="form-control" asp-for="CommunityId" asp-items="@Model.Communities">
+                        <option>Please Select</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="">Title : </label>
+                    <input required type="text" class="form-control" name="Title" >
+                </div>
+
+                <div class="form-group">
+                    <label for="">Body : </label>
+                    <textarea required class="form-control" name="Body"> 
+
+                    </textarea>
+                    
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-success btn-block" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

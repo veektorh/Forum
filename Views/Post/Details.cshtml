@@ -1,0 +1,101 @@
+@model PostViewModels.PostDetailsViewModel
+
+<h1>@Model.Post.Community.Name</h1>
+
+
+<div class="post_row">
+        <div class="row">
+            <div class="col-md-2" >
+                    <div class="arrows">
+                        <i class="fa fa-arrow-up"></i>
+                        <br />
+                        @Model.Post.Upvotes
+                        <br />
+                        <i class="fa fa-arrow-down"></i>
+                    </div>
+                
+
+
+            </div>
+
+            <div class="col-md-10" style="margin-left:-60px;">
+                <div class="post">
+                    <div class="title">
+                        <a href="#" class="post_details_title">@Model.Post.Title</a><br/>
+                        <span class="post_details_time">@Model.Post.RelatedTime by</span> 
+                        <span class="post_details_user"><a href="#">@Model.Post.User.UserName</a> from</span> 
+                        <span class="post_details_community"><a asp-controller="Community" asp-action="Details" asp-route-id="@Model.Post.CommunityId">r/@Model.Post.Community.Name</a></span>
+                        
+                    </div>
+                    <div class="post_details_body">
+                        
+                        <p>
+                            @Model.Post.Body
+                        </p>
+                    </div>
+                    <div class="footer">
+                        <span> <a href="#">@Model.Post.commentCount comments</a> </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+@if(User.Identity.IsAuthenticated)
+{
+<div>
+    <form asp-controller="Post" asp-action="AddComment" asp-route-id="@Model.Post.Id">
+    <textarea class="form-control" name="comment">
+
+    </textarea> <br/>
+    <input type="submit" value="Add comment"/>
+    </form>
+    
+</div>
+}
+
+<br/><br/>
+@if(!Model.Comments.Any())
+{
+    <p> No comments on this post </p>
+}
+
+else
+{
+    foreach(var comment in Model.Comments){
+    <div>
+    <div class="post_row">
+        <div class="row">
+            <div class="col-md-2" >
+                <div class="arrows">
+                        <i class="fa fa-arrow-up"></i>
+                        <br />
+                        @comment.Upvotes
+                        <br />
+                        <i class="fa fa-arrow-down"></i>
+                </div>
+
+
+            </div>
+            <div class="col-md-10">
+                <div class="">
+                    <div class="">
+                        <a href="#">@comment.User.UserName</a>
+                        <p>@comment.Body</p>
+                    </div>
+                    <div class="">
+                        <span class=""> @comment.Relatedtime </span> 
+                    </div>
+                    <div class="footer">
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+}
+}

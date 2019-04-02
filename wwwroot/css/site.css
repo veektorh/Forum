@@ -1,0 +1,84 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* -------- Community CSS ---------------*/
+
+.community_row{
+    border:1px solid whitesmoke;
+    border-radius: 5px;
+    margin:25px 0px;
+    padding:10px;
+    background: whitesmoke;
+}
+
+/* -------- POST CSS ---------------*/
+
+
+.post_details_title{
+    font-weight: normal;
+    font-size: 22px;
+}
+
+.post_details_time,.post_details_user,.post_details_community{
+    font-style: italic;
+    font-size: 13px;
+}
+
+.post_details_body{
+    border: 1px solid rgb(179, 119, 169);
+    padding:10px;
+    border-radius: 5px;
+    margin: 20px 0px;
+}
+.post_row{
+    border-radius: 5px;
+    margin:25px 0px;
+    padding:10px;
+    background: whitesmoke;
+}
+.post_image {
+    margin-top: 10px;
+}
+
+.post .title {
+    font-weight: bolder;
+    font-size: 17px;
+}
+
+.post_time {
+    font-style: italic;
+}
+
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}

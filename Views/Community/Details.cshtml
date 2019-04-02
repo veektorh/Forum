@@ -1,0 +1,68 @@
+@model CommunityViewModels.CommunityDetailsViewModel
+
+@if(Model.Community == null){
+    <div class="alert alert-danger alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+        <p><i class="icon fa fa-ban"></i> An Error Occured </p>
+    </div>
+}else
+{
+    <h1>@Model.Community.Name</h1>
+}
+
+@if(!Model.Posts.Any()){
+    <div class="alert alert-danger alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+        <p><i class="icon fa fa-ban"></i> There are no posts in this community </p>
+    </div>
+    
+}
+
+@if(User.Identity.IsAuthenticated)
+{
+    <a class="btn btn-primary" asp-controller="Post" asp-action="create">Create new post</a>
+}
+
+
+@if(Model.Posts.Any()){
+    foreach(var post in Model.Posts){
+    <div>
+    <div style="border:1px solid grey;margin:5px;padding:10px;">
+        <div class="row">
+            <div class="col-md-2" >
+                <div class="col-md-3" >
+                    <div class="arrows">
+                        <i class="fa fa-arrow-up"></i>
+                        <br />
+                        @post.Upvotes
+                        <br />
+                        <i class="fa fa-arrow-down"></i>
+                    </div>
+                </div>
+                <div class="col-md-6" class="">
+                    <img src="~/images/post.png" class="img img-thumbnail post_image" width="45" height="45" />
+                </div>
+
+
+            </div>
+            <div class="col-md-10" style="margin-left:-60px;">
+                <div class="post">
+                    <div class="title">
+                        <a asp-controller="Post" asp-action="Details" asp-route-id="@post.Id">@post.Title</a>
+                    </div>
+                    <div class="body">
+                        <span class="post_time">@post.RelatedTime</span> by
+                        <span class="user"><a href="#">@post.User.UserName</a></span> from
+                        <span class="community"><a asp-controller="Community" asp-action="Details" asp-route-id="@post.CommunityId">r/@post.Community.Name</a></span>
+                    </div>
+                    <div class="footer">
+                        <span> <a asp-controller="Post" asp-action="Details" asp-route-id="@post.Id">@post.commentCount comments</a> </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+}
+}
