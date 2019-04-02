@@ -8,6 +8,7 @@ using ForumViewModels.CommunityViewModels;
 using CommunityViewModels;
 using System.Linq;
 using Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Forum.Web.Controllers
 {
@@ -43,11 +44,13 @@ namespace Forum.Web.Controllers
 
             return View(model);
         }
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CommunityCreateViewModel model)
         {
@@ -67,15 +70,6 @@ namespace Forum.Web.Controllers
             return RedirectToAction("index");
         }
     
-        public async Task<IActionResult> Edit(int id)
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(Community model)
-        {
-            return View();
-        }
+        
     }
 }

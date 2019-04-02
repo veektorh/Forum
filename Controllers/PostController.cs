@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using PostViewModels;
 using Microsoft.AspNetCore.Identity;
 using Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Forum.Web.Controllers
 {
@@ -29,6 +30,7 @@ namespace Forum.Web.Controllers
             _commentService = commentService;
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             var model = new PostCreateViewModel();
@@ -45,6 +47,7 @@ namespace Forum.Web.Controllers
 
         
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(PostCreateViewModel post)
         {
@@ -91,6 +94,7 @@ namespace Forum.Web.Controllers
             return View(model);
         }
         
+        [Authorize]
         public async Task<IActionResult> AddComment(int id, string comment)
         {
             try{
