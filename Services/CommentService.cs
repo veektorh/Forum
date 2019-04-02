@@ -18,15 +18,16 @@ namespace Forum.Web.Services
         }
 
         public IQueryable<Comment> GetAll(){
-            return _context.Comments.Include("ParentComment.Post.User");
+            return _context.Comments.Include(a=>a.ParentComment).Include(b=>b.Post).Include(c=>c.User);
         }
 
         public IQueryable<Comment> GetAll(Expression<Func<Comment,bool>> predicate){
-            return _context.Comments.Include("ParentComment.Post.User").Where(predicate);
+            return _context.Comments.Include(a=>a.ParentComment).Include(b=>b.Post).Include(c=>c.User).Where(predicate);
+            
         }
 
         public Comment GetById(int id){
-            return _context.Comments.Include("ParentComment.Post.User").FirstOrDefault(a=>a.Id==id);
+            return _context.Comments.Include(a=>a.ParentComment).Include(b=>b.Post).Include(c=>c.User).FirstOrDefault(a=>a.Id==id);
         }
 
         public void Add(Comment Comment){
