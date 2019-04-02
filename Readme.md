@@ -7,9 +7,9 @@ plain old boring forum build with dotnet core v2.0.0
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 1. Clone or Download the project
-2. Restore all dependencies - ``` dotnet restore
-3. Update Database - ``` dotnet ef database update
-4. Run app - ``` dotnet run 
+2. Restore all dependencies - `dotnet restore`
+3. Update Database - `dotnet ef database update`
+4. Run app - `dotnet run`
 
 
 ## Built With
@@ -36,7 +36,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 
 
-To-do
+## To-do
 
 * Upvotes
 * Subscribe
