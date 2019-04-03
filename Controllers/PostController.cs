@@ -93,14 +93,22 @@ namespace Forum.Web.Controllers
 
             return View(model);
         }
+
+        public IActionResult GetCommentsJson(int id)
+        {
+            var comment = _commentService.GetAll(item => item.PostId == id).OrderByDescending(a=>a.CreatedAt).ToList();
+            var commentModel = Helper.ConvertToCommentIndexViewModel(comment);
+            return Json(new { comments = commentModel});
+        }
         
         [Authorize]
         public async Task<IActionResult> AddComment(int id, string comment)
         {
             try{
+
                 if(String.IsNullOrEmpty(comment))
                 {
-                    return RedirectToAction("Details",new {id=id});
+                    return Json(false);
                 }
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 var commentModel = new Comment(){
@@ -112,12 +120,12 @@ namespace Forum.Web.Controllers
                 };
                 _commentService.Add(commentModel);
 
-                return RedirectToAction("Details",new {id=id});
+                return Json(true);
 
             }
             catch(Exception ex)
             {
-                return RedirectToAction("Details",new {id=id});
+                return Json(false);
             }
         }
         

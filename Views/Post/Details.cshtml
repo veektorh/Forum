@@ -3,9 +3,10 @@
 <h1>@Model.Post.Community.Name</h1>
 
 
+
 <div class="post_row">
         <div class="row">
-            <div class="col-md-2" >
+            <div class="col-xs-2" >
                     <div class="arrows">
                         <i class="fa fa-arrow-up"></i>
                         <br />
@@ -18,7 +19,7 @@
 
             </div>
 
-            <div class="col-md-10" style="margin-left:-60px;">
+            <div class="col-xs-10" style="">
                 <div class="post">
                     <div class="title">
                         <a href="#" class="post_details_title">@Model.Post.Title</a><br/>
@@ -46,12 +47,11 @@
 @if(User.Identity.IsAuthenticated)
 {
 <div>
-    <form asp-controller="Post" asp-action="AddComment" asp-route-id="@Model.Post.Id">
-    <textarea class="form-control" name="comment">
-
+    
+    <textarea class="form-control" name="comment" id="comment">
     </textarea> <br/>
-    <input type="submit" value="Add comment"/>
-    </form>
+    <input type="submit" id="btnAddComment" value="Add comment"/>
+    
     
 </div>
 }
@@ -62,40 +62,151 @@
     <p> No comments on this post </p>
 }
 
-else
+@*else
 {
     foreach(var comment in Model.Comments){
     <div>
-    <div class="post_row">
-        <div class="row">
-            <div class="col-md-2" >
-                <div class="arrows">
-                        <i class="fa fa-arrow-up"></i>
-                        <br />
-                        @comment.Upvotes
-                        <br />
-                        <i class="fa fa-arrow-down"></i>
+        <div class="post_row">
+            <div class="row">
+                <div class="col-md-2" >
+                    <div class="arrows">
+                            <i class="fa fa-arrow-up"></i>
+                            <br />
+                            @comment.Upvotes
+                            <br />
+                            <i class="fa fa-arrow-down"></i>
+                    </div>
+
+
                 </div>
-
-
-            </div>
-            <div class="col-md-10">
-                <div class="">
+                <div class="col-md-10">
                     <div class="">
-                        <a href="#">@comment.User.Email</a>
-                        <p>@comment.Body</p>
+                        <div class="">
+                            <a href="#">@comment.User.Email</a>
+                            <p>@comment.Body</p>
+                        </div>
+                        <div class="">
+                            <span class=""> @comment.Relatedtime </span> 
+                        </div>
+                        <div class="footer">
+                            
+                        </div>
                     </div>
-                    <div class="">
-                        <span class=""> @comment.Relatedtime </span> 
-                    </div>
-                    <div class="footer">
-                        
-                    </div>
+
                 </div>
-
             </div>
         </div>
     </div>
-</div>
 }
+}*@
+
+<div id="target">
+    Loading...
+</div>
+
+@section Scripts{
+    
+
+    <script>
+        
+        var postId = @Model.Post.Id;
+
+        $(document).ready(function(){
+            RefreshComment();
+        });
+
+        $("#btnAddComment").click(function(e){
+
+            e.preventDefault();
+            var comment = $("#comment").val().trim();
+
+            if(comment == '' || comment == undefined){
+                alert("please fill in all field");
+                return;
+            }
+            var data = {
+                id : postId,
+                comment : comment
+            };
+
+            $.post("/post/AddComment", data , (res)=>{
+                if(res){
+                    RefreshComment();
+                    $("#comment").val('');
+                    return;
+                }
+                alert("An Error Occured!");
+            });
+            
+        });
+        
+        
+        function RefreshComment(){
+
+            getComments(postId, function (result) {
+                var template = $("#template").html();
+                var data = result
+                
+                Mustache.parse(template);
+
+                var rendered = Mustache.render(template, data);
+
+                $("#target").html(rendered);
+            });
+
+        }     
+
+        function getComments(postId,callback) {            
+            $.ajax({
+                type: 'GET',
+                url:'/post/GetCommentsJson/'+ postId,
+                data: { },
+                cache: false,
+                success: function (data) {                    
+                    callback(data);
+                }
+            });
+            
+        }
+
+    </script>
+
+
+    <script id="template" type="x-tmpl-mustache">
+        {{#comments}}
+
+        <div class="post_row">
+            <div class="row">
+                <div class="col-xs-2" >
+                    <div class="arrows">
+                            <i class="fa fa-arrow-up"></i>
+                            <br />
+                            {{upvotes}}
+                            <br />
+                            <i class="fa fa-arrow-down"></i>
+                    </div>
+
+
+                </div>
+                <div class="col-xs-10">
+                    <div class="">
+                        <div class="">
+                            <a href="#">{{user.email}}</a>
+                            <p>{{body}}</p>
+                        </div>
+                        <div class="">
+                            <span class=""> {{relatedtime}} </span> 
+                        </div>
+                        <div class="footer">
+                            
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {{/comments}}
+    
+    </script>
 }
