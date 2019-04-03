@@ -8,7 +8,7 @@
                 <div class="form-group">
                     <label for="">Select Community : </label>
                     <select required class="form-control" asp-for="CommunityId" asp-items="@Model.Communities">
-                        <option>Please Select</option>
+                        <option disabled selected value="">Please Select</option>
                     </select>
                 </div>
 
