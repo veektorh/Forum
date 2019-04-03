@@ -11,3 +11,16 @@ C:\Users\bolum.victor\Documents\Vsproj\Core\Core2.0\Mvc\Forum\Forum.Web\obj\Debu
 C:\Users\bolum.victor\Documents\Vsproj\Core\Core2.0\Mvc\Forum\Forum.Web\obj\Debug\netcoreapp2.0\Forum.Web.pdb
 C:\Users\bolum.victor\Documents\Vsproj\Core\Core2.0\Mvc\Forum\Forum.Web\obj\Debug\netcoreapp2.0\Forum.Web.csprojResolveAssemblyReference.cache
 c:\Users\bolum.victor\Documents\Vsproj\Core\Core2.0\Mvc\Forum\Forum.Web\bin\Debug\netcoreapp2.0\app.db
+F:\Code\Forum\bin\Debug\netcoreapp2.0\app.db
+F:\Code\Forum\bin\Debug\netcoreapp2.0\Forum.Web.deps.json
+F:\Code\Forum\bin\Debug\netcoreapp2.0\Forum.Web.runtimeconfig.json
+F:\Code\Forum\bin\Debug\netcoreapp2.0\Forum.Web.runtimeconfig.dev.json
+F:\Code\Forum\bin\Debug\netcoreapp2.0\Forum.Web.dll
+F:\Code\Forum\bin\Debug\netcoreapp2.0\Forum.Web.pdb
+F:\Code\Forum\obj\Debug\netcoreapp2.0\Forum.Web.csprojAssemblyReference.cache
+F:\Code\Forum\obj\Debug\netcoreapp2.0\Forum.Web.csproj.CoreCompileInputs.cache
+F:\Code\Forum\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+F:\Code\Forum\obj\Debug\netcoreapp2.0\Forum.Web.AssemblyInfoInputs.cache
+F:\Code\Forum\obj\Debug\netcoreapp2.0\Forum.Web.AssemblyInfo.cs
+F:\Code\Forum\obj\Debug\netcoreapp2.0\Forum.Web.dll
+F:\Code\Forum\obj\Debug\netcoreapp2.0\Forum.Web.pdb
