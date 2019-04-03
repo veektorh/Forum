@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-namespace HomeViewModels{
+namespace HomeViewModels
+{
     public class HomeIndexViewModel
     {
         public List<HomePostIndexViewModel> Posts{get;set;}
