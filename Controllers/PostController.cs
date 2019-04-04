@@ -11,6 +11,7 @@ using PostViewModels;
 using Microsoft.AspNetCore.Identity;
 using Services;
 using Microsoft.AspNetCore.Authorization;
+using CommunityViewModels;
 
 namespace Forum.Web.Controllers
 {
@@ -22,12 +23,18 @@ namespace Forum.Web.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
 
         private readonly ICommentService _commentService;
-        public PostController(ICommunityService communityService, IPostService postService, UserManager<ApplicationUser> userManager, ICommentService commentService)
+
+        private readonly ICommentStateService _CommentStateService;
+
+        private readonly IPostStateService _PostStateService;
+        public PostController(ICommunityService communityService, IPostService postService, UserManager<ApplicationUser> userManager, ICommentService commentService, ICommentStateService CommentStateService, IPostStateService PostStateService)
         {
             _communityService = communityService;
             _postService = postService;
             _userManager = userManager;
             _commentService = commentService;
+            _CommentStateService = CommentStateService;
+            _PostStateService = PostStateService;
         }
 
         [Authorize]
@@ -39,19 +46,20 @@ namespace Forum.Web.Controllers
             {
                 return View(model);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                var msg = ex.Message;
                 return View(model);
             }
         }
 
-        
+
 
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(PostCreateViewModel post)
         {
-            
+
             post.Communities = GetCommunityDropdown();
 
             try
@@ -60,58 +68,80 @@ namespace Forum.Web.Controllers
                 {
                     return View(post);
                 }
-            
+
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                var newPost = new Post(){
+                var newPost = new Post()
+                {
                     Title = post.Title,
                     Body = post.Body,
                     CommunityId = int.Parse(post.CommunityId),
                     CreatedAt = DateTime.Now,
-                    CreatedBy = user.Id,                
+                    CreatedBy = user.Id,
                 };
 
-                 _postService.Add(newPost);
+                _postService.Add(newPost);
 
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                var msg = ex.Message;
                 return View(post);
             }
         }
-    
+
         public IActionResult Details(int id)
         {
-            var post = _postService.GetById(id);
-            var postModel = Helper.ConvertToHomePostIndexViewModel(post,_commentService);
-            var comments = _commentService.GetAll(item => item.PostId == id).ToList();
+            try
+            {
+                var post = _postService.GetById(id);
+                var postModel = Helper.ConvertToHomePostIndexViewModel(post, _commentService);
+                var comments = _commentService.GetAll(item => item.PostId == id).ToList();
 
-            var model = new PostDetailsViewModel(){
-                Post = postModel,
-                Comments = Helper.ConvertToCommentIndexViewModel(comments)
-            };
+                var model = new PostDetailsViewModel()
+                {
+                    Post = postModel,
+                    Comments = Helper.ConvertToCommentIndexViewModel(comments)
+                };
 
-            return View(model);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         public IActionResult GetCommentsJson(int id)
         {
-            var comment = _commentService.GetAll(item => item.PostId == id).OrderByDescending(a=>a.CreatedAt).ToList();
-            var commentModel = Helper.ConvertToCommentIndexViewModel(comment);
-            return Json(new { comments = commentModel});
+            try
+            {
+                var comment = _commentService.GetAll(item => item.PostId == id).OrderByDescending(a => a.CreatedAt).ToList();
+                var commentModel = Helper.ConvertToCommentIndexViewModel(comment);
+                return Json(new { comments = commentModel });
+
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.Message;
+                return Json(new { comments = new CommentIndexViewModel() });
+            }
         }
-        
+
         [Authorize]
         public async Task<IActionResult> AddComment(int id, string comment)
         {
-            try{
+            try
+            {
 
-                if(String.IsNullOrEmpty(comment))
+                if (String.IsNullOrEmpty(comment))
                 {
                     return Json(false);
                 }
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                var commentModel = new Comment(){
+                var commentModel = new Comment()
+                {
                     Body = comment,
                     CreatedAt = DateTime.Now,
                     CreatedBy = user.Id,
@@ -123,19 +153,79 @@ namespace Forum.Web.Controllers
                 return Json(true);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                var msg = ex.Message;
                 return Json(false);
             }
         }
-        
+
+        [Authorize]
+        public async Task<IActionResult> UpVotePost(int id) {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var res = _PostStateService.UpvotePost(user.Id,id);
+                return Ok(new {status = true, count = res} );
+            }
+            catch(Exception ex)
+            {
+                var msg = ex.Message;
+                return Ok(new {status = false, count = 0} );
+            }
+         }
+
+        [Authorize]
+        public async Task<IActionResult> DownVotePost(int id) {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var res = _PostStateService.DownvotePost(user.Id,id);
+                return Ok(new {status = true, count = res} );
+            }
+            catch(Exception ex)
+            {
+                var msg = ex.Message;
+                return Ok(new {status = false, count = 0} );
+            }
+         }
+
+        [Authorize]
+        public async Task<IActionResult> UpVoteComment(int id) {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var res = _CommentStateService.UpvoteComment(user.Id,id);
+                return Ok(new {status = true, count = res} );
+            }
+            catch(Exception ex)
+            {
+                var msg = ex.Message;
+                return Ok(new {status = false, count = 0});
+            }
+         }
+        [Authorize]
+        public async Task<IActionResult> DownVoteComment(int id) {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var res = _CommentStateService.DownvoteComment(user.Id,id);
+                return Ok(new {status = true, count = res} );
+            }
+            catch(Exception ex)
+            {
+                var msg = ex.Message;
+                return Ok(new {status = false, count = 0});
+            }
+         }
+
         public IEnumerable<SelectListItem> GetCommunityDropdown()
         {
             return _communityService.GetAll().ToList().Select(a => new SelectListItem()
-                {
-                    Text = a.Name,
-                    Value = a.Id.ToString()
-                });
+            {
+                Text = a.Name,
+                Value = a.Id.ToString()
+            });
         }
     }
 }

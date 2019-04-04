@@ -27,18 +27,27 @@
 @if(Model.Posts.Any()){
     foreach(var post in Model.Posts){
     <div>
-    <div style="border:1px solid grey;margin:5px;padding:10px;">
+    <div class="post_row">
         <div class="row">
             <div class="col-md-2" >
-                <div class="col-md-3" >
-                    <div class="arrows">
-                        <i class="fa fa-arrow-up"></i>
-                        <br />
-                        @post.Upvotes
-                        <br />
-                        <i class="fa fa-arrow-down"></i>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="col-md-3" >
+                        <div class="arrows">
+                            <a href="#" class="btnPostUpvote" data-id="@post.Id"> <i class="fa fa-arrow-up"></i></a>
+
+                            <br />
+                            <span class="postUpvote-@post.Id">@post.Upvotes</span>
+                            
+                            <br />
+
+                            <a href="#" class="btnPostDownvote" data-id="@post.Id"> <i class="fa fa-arrow-down"></i></a>
+                            
+                        </div>
                     </div>
-                </div>
+                }
+                
+
                 <div class="col-md-6" class="">
                     <img src="~/images/post.png" class="img img-thumbnail post_image" width="45" height="45" />
                 </div>

@@ -18,6 +18,10 @@ namespace Forum.Web.Data
         public DbSet<Comment> Comments {get;set;}
         public DbSet<Post> Posts {get;set;}
         public DbSet<Community> Communities {get;set;}
+
+        public DbSet<CommentState> CommentStates {get;set;}
+
+        public DbSet<PostState> PostStates {get;set;}
         
         protected override void OnModelCreating(ModelBuilder builder)
         {

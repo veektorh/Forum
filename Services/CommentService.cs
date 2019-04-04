@@ -39,5 +39,21 @@ namespace Forum.Web.Services
             _context.Comments.Remove(Comment);
             _context.SaveChanges();
         }
+
+        public int IncrementUpvote(int commentId)
+        {
+            var comment = GetById(commentId);
+            comment.Upvotes++ ;
+            _context.SaveChanges();
+            return comment.Upvotes ;
+        }
+
+        public int DecrementUpvote(int commentId)
+        {
+            var comment = GetById(commentId);
+            comment.Upvotes-- ;
+            _context.SaveChanges();
+            return comment.Upvotes ;
+        }
     }
 }

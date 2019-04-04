@@ -14,5 +14,9 @@ namespace Forum.Web.Services
         Post GetById(int id);
         void Add(Post Post);
         void Remove(Post Post);
+
+        int IncrementUpvote(int postId);
+
+        int DecrementUpvote(int postId);
     }
 }

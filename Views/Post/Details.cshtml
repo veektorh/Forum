@@ -6,20 +6,22 @@
 
 <div class="post_row">
         <div class="row">
-            <div class="col-xs-2" >
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="col-xs-1" >
                     <div class="arrows">
-                        <i class="fa fa-arrow-up"></i>
+                        <a href="#" class="btnPostUpvote" data-id="@Model.Post.Id"> <i class="fa fa-arrow-up"></i></a>
                         <br />
-                        @Model.Post.Upvotes
+                        <span class="postUpvote-@Model.Post.Id">@Model.Post.Upvotes</span>
                         <br />
-                        <i class="fa fa-arrow-down"></i>
+                        <a href="#" class="btnPostDownvote" data-id="@Model.Post.Id"> <i class="fa fa-arrow-down"></i></a>
                     </div>
-                
-
-
             </div>
+            }
+            
 
-            <div class="col-xs-10" style="">
+            <div class="col-xs-11" style="">
                 <div class="post">
                     <div class="title">
                         <a href="#" class="post_details_title">@Model.Post.Title</a><br/>
@@ -62,43 +64,7 @@
     <p> No comments on this post </p>
 }
 
-@*else
-{
-    foreach(var comment in Model.Comments){
-    <div>
-        <div class="post_row">
-            <div class="row">
-                <div class="col-md-2" >
-                    <div class="arrows">
-                            <i class="fa fa-arrow-up"></i>
-                            <br />
-                            @comment.Upvotes
-                            <br />
-                            <i class="fa fa-arrow-down"></i>
-                    </div>
 
-
-                </div>
-                <div class="col-md-10">
-                    <div class="">
-                        <div class="">
-                            <a href="#">@comment.User.Email</a>
-                            <p>@comment.Body</p>
-                        </div>
-                        <div class="">
-                            <span class=""> @comment.Relatedtime </span> 
-                        </div>
-                        <div class="footer">
-                            
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-}
-}*@
 
 <div id="target">
     Loading...
@@ -169,6 +135,10 @@
             
         }
 
+        
+
+        
+
     </script>
 
 
@@ -177,17 +147,19 @@
 
         <div class="post_row">
             <div class="row">
-                <div class="col-xs-2" >
-                    <div class="arrows">
-                            <i class="fa fa-arrow-up"></i>
-                            <br />
-                            {{upvotes}}
-                            <br />
-                            <i class="fa fa-arrow-down"></i>
+                @if(User.Identity.IsAuthenticated){
+                    
+                    <div class="col-xs-2" >
+                        <div class="arrows">
+                                <a href="#" class="btnCommentUpvote" data-id="{{id}}"> <i class="fa fa-arrow-up"></i></a>
+                                <br />
+                                <span class="commentUpvote-{{id}}">{{upvotes}}</span>
+                                <br />
+                                <a href="#" class="btnCommentDownvote" data-id="{{id}}"> <i class="fa fa-arrow-down"></i></a>
+                                
+                        </div>               
                     </div>
-
-
-                </div>
+                }
                 <div class="col-xs-10">
                     <div class="">
                         <div class="">

@@ -35,14 +35,22 @@ namespace Forum.Web.Controllers
         }
 
         public IActionResult Details(int id){
-            var community = _communityService.GetById(id);
-            var posts = _postService.GetAll(item => item.CommunityId == id).ToList();
+            try
+            {
+                var community = _communityService.GetById(id);
+                var posts = _postService.GetAll(item => item.CommunityId == id).OrderByDescending(a => a.CreatedAt).ToList();
 
-            var model = new CommunityDetailsViewModel();
-            model.Posts = Helper.ConvertToHomePostIndexViewModel(posts,_commentService);
-            model.Community = community;
+                var model = new CommunityDetailsViewModel();
+                model.Posts = Helper.ConvertToHomePostIndexViewModel(posts,_commentService);
+                model.Community = community;
 
-            return View(model);
+                return View(model);
+            }
+            catch(Exception ex)
+            {
+                var msg = ex.Message;
+                return RedirectToAction("Error","Home");
+            }
         }
         [Authorize]
         public IActionResult Create()
@@ -54,20 +62,28 @@ namespace Forum.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CommunityCreateViewModel model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return View();
+                if (!ModelState.IsValid)
+                {
+                    return View();
+                }
+                var name = User.Identity.Name;
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var community = new Community();
+                community.CreatedAt = DateTime.Now;
+                community.CreatedBy = user.Id;
+                community.Description = model.Description;
+                community.Name = model.Name;
+                
+                _communityService.Add(community);
+                return RedirectToAction("index");
             }
-            var name = User.Identity.Name;
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var community = new Community();
-            community.CreatedAt = DateTime.Now;
-            community.CreatedBy = user.Id;
-            community.Description = model.Description;
-            community.Name = model.Name;
-            
-            _communityService.Add(community);
-            return RedirectToAction("index");
+            catch(Exception ex)
+            {
+                var msg = ex.Message;
+                return RedirectToAction("index");
+            }
         }
     
         
