@@ -52,10 +52,11 @@ namespace Forum.Web
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<ICommunityService, Communityservice>();
-            services.AddTransient<ICommentService, CommentService>();
-            services.AddTransient<IPostService, PostService>();
-
+            services.AddScoped<ICommunityService, Communityservice>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICommentStateService, CommentStateService>();
+            services.AddScoped<IPostStateService, PostStateService>();
             services.AddMvc();
         }
 

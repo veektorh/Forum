@@ -14,5 +14,9 @@ namespace Forum.Web.Services
         Comment GetById(int id);
         void Add(Comment Comment);
         void Remove(Comment Comment);
+
+        int IncrementUpvote(int commentId);
+
+        int DecrementUpvote(int commentId);
     }
 }

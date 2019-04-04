@@ -10,19 +10,19 @@
                     <select required class="form-control" asp-for="CommunityId" asp-items="@Model.Communities">
                         <option disabled selected value="">Please Select</option>
                     </select>
+                    <span asp-validation-for="CommunityId" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
                     <label for="">Title : </label>
-                    <input required type="text" class="form-control" name="Title" >
+                    <input type="text" class="form-control" asp-for="Title" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
                     <label for="">Body : </label>
-                    <textarea required class="form-control" name="Body"> 
-
-                    </textarea>
-                    
+                    <textarea class="form-control" asp-for="Body"></textarea>
+                    <span asp-validation-for="Body" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">

@@ -13,7 +13,7 @@ namespace PostViewModels{
         [Required]
         public string Body { get; set; }
 
-        [Required]
+        [Required][Display(Name = "Community")]
         public string CommunityId { get; set; }
 
         public IEnumerable<SelectListItem> Communities {get;set;}
