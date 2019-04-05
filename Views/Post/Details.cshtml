@@ -17,7 +17,7 @@
                         <br />
                         <a href="#" class="btnPostDownvote" data-id="@Model.Post.Id"> <i class="fa fa-arrow-down"></i></a>
                     </div>
-            </div>
+                </div>
             }
             
 
@@ -30,12 +30,15 @@
                         <span class="post_details_community"><a asp-controller="Community" asp-action="Details" asp-route-id="@Model.Post.CommunityId">r/@Model.Post.Community.Name</a></span>
                         
                     </div>
-                    <div class="post_details_body">
-                        
-                        <p>
-                            @Model.Post.Body
-                        </p>
-                    </div>
+                    @if(!string.IsNullOrEmpty(Model.Post.Body))
+                    {
+                        <div class="post_details_body">
+                            <p>
+                                @Model.Post.Body
+                            </p>
+                        </div>
+                    }
+                    
                     <div class="footer">
                         <span> <a href="#">@Model.Post.commentCount comments</a> </span>
                     </div>
@@ -50,8 +53,7 @@
 {
 <div>
     
-    <textarea class="form-control" name="comment" id="comment">
-    </textarea> <br/>
+    <textarea class="form-control" name="comment" id="comment"></textarea> <br/>
     <input type="submit" id="btnAddComment" value="Add comment"/>
     
     

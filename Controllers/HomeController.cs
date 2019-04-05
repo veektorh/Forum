@@ -25,7 +25,7 @@ namespace Forum.Web.Controllers
         }
         public IActionResult Index()
         {
-            var posts = _postService.GetAll().OrderByDescending(a => a.CreatedAt).ToList();
+            var posts = _postService.GetAll().OrderByDescending(a => a.CreatedAt).Take(20).ToList();
 
             var homeViewModel = new HomeIndexViewModel(){
                 Posts = Helper.ConvertToHomePostIndexViewModel(posts,_commentService)

@@ -8,8 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 1. Clone or Download the project
 2. Restore all dependencies - `dotnet restore`
-3. Update Database - `dotnet ef database update`
-4. Run app - `dotnet run`
+3. Run app - `dotnet run`
 
 
 ## Built With
@@ -33,12 +32,12 @@ These instructions will get you a copy of the project up and running on your loc
 * Create Community
 * Add Topic
 * Add Comment
-
+* Upvotes
 
 
 ## To-do
 
-* Upvotes
+
 * Subscribe
 * Save posts
 * View Users - their posts, followed communities ,saved posts , comments
