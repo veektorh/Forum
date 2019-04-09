@@ -8,6 +8,7 @@ using Forum.Web.Models;
 using Forum.Web.Services;
 using HomeViewModels;
 using Services;
+using Extensions;
 
 namespace Forum.Web.Controllers
 {

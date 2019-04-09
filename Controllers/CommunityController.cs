@@ -9,6 +9,7 @@ using CommunityViewModels;
 using System.Linq;
 using Services;
 using Microsoft.AspNetCore.Authorization;
+using Extensions;
 
 namespace Forum.Web.Controllers
 {
