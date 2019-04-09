@@ -41,7 +41,7 @@ namespace Forum.Web.Controllers
                 var posts = _postService.GetAll(item => item.CommunityId == id).OrderByDescending(a => a.CreatedAt).ToList();
 
                 var model = new CommunityDetailsViewModel();
-                model.Posts = Helper.ConvertToHomePostIndexViewModel(posts,_commentService);
+                model.Posts = posts.ConvertToHomePostIndexViewModel(_commentService);
                 model.Community = community;
 
                 return View(model);

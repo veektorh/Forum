@@ -28,7 +28,7 @@ namespace Forum.Web.Controllers
             var posts = _postService.GetAll().OrderByDescending(a => a.CreatedAt).Take(20).ToList();
 
             var homeViewModel = new HomeIndexViewModel(){
-                Posts = Helper.ConvertToHomePostIndexViewModel(posts,_commentService)
+                Posts = posts.ConvertToHomePostIndexViewModel(_commentService)
             };
 
             return View(homeViewModel);
