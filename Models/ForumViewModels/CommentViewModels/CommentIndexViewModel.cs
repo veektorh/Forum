@@ -2,6 +2,7 @@ using System;
 using Forum.Web.Models;
 
 namespace CommunityViewModels{
+    
     public class CommentIndexViewModel
     {
         public int Id { get; set; }
