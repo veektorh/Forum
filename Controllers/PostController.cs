@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Services;
 using Microsoft.AspNetCore.Authorization;
 using CommunityViewModels;
+using Extensions;
 
 namespace Forum.Web.Controllers
 {
@@ -95,13 +96,13 @@ namespace Forum.Web.Controllers
             try
             {
                 var post = _postService.GetById(id);
-                var postModel = Helper.ConvertToHomePostIndexViewModel(post, _commentService);
+                var postModel = post.ConvertToHomePostIndexViewModel(_commentService); 
                 var comments = _commentService.GetAll(item => item.PostId == id).ToList();
 
                 var model = new PostDetailsViewModel()
                 {
                     Post = postModel,
-                    Comments = Helper.ConvertToCommentIndexViewModel(comments)
+                    Comments = comments.ConvertToCommentIndexViewModel()
                 };
 
                 return View(model);
@@ -118,7 +119,7 @@ namespace Forum.Web.Controllers
             try
             {
                 var comment = _commentService.GetAll(item => item.PostId == id).OrderByDescending(a => a.CreatedAt).ToList();
-                var commentModel = Helper.ConvertToCommentIndexViewModel(comment);
+                var commentModel = comment.ConvertToCommentIndexViewModel();
                 return Json(new { comments = commentModel });
 
             }

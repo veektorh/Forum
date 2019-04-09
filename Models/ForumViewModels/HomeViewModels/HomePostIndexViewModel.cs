@@ -3,6 +3,7 @@ using System;
 using Forum.Web.Models;
 
 namespace HomeViewModels{
+    
     public class HomePostIndexViewModel
     {
         public int Id { get; set; }
