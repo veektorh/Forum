@@ -26,7 +26,7 @@
                     <div class="title">
                         <a href="#" class="post_details_title">@Model.Post.Title</a><br/>
                         <span class="post_details_time">@Model.Post.RelatedTime by</span> 
-                        <span class="post_details_user"><a href="#">@Model.Post.User.UserName</a> from</span> 
+                        <span class="post_details_user"><a asp-controller="Profile" asp-action="Details" asp-route-username="@Model.Post.User.UserName">@Model.Post.User.UserName</a> from</span> 
                         <span class="post_details_community"><a asp-controller="Community" asp-action="Details" asp-route-id="@Model.Post.CommunityId">r/@Model.Post.Community.Name</a></span>
                         
                     </div>
@@ -165,7 +165,7 @@
                 <div class="col-xs-10">
                     <div class="">
                         <div class="">
-                            <a href="#">{{user.email}}</a>
+                            <a asp-controller="Profile" asp-action="Details" asp-route-username="{{user.email}}">{{user.email}}</a>
                             <p>{{body}}</p>
                         </div>
                         <div class="">

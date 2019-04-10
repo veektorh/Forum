@@ -61,7 +61,7 @@
                     </div>
                     <div class="body">
                         <span class="post_time">@post.RelatedTime</span> by
-                        <span class="user"><a href="#">@post.User.UserName</a></span> from
+                        <span class="user"><a asp-controller="Profile" asp-action="Details" asp-route-username="@post.User.UserName">@post.User.UserName</a></span> from
                         <span class="community"><a asp-controller="Community" asp-action="Details" asp-route-id="@post.CommunityId">r/@post.Community.Name</a></span>
                     </div>
                     <div class="footer">
