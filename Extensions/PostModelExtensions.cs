@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Forum.Web.Models;
 using Forum.Web.Services;
 using HomeViewModels;
+using ProfileViewModels;
 using Services;
-
 
 namespace Extensions
 {
@@ -52,6 +52,30 @@ namespace Extensions
                 commentCount = _commentService.GetAll(comment =>comment.PostId == item.Id).Count()
             }).ToList();
         }
+
+         public static List<ProfilePostDetailsViewModel> ConvertToProfilePostDetailsViewModel(this List<Post> post, ICommentService _commentService)
+        {
+            if(post == null || _commentService == null)
+            {
+                return new List<ProfilePostDetailsViewModel>();
+            }
+            return post.Select(item => new ProfilePostDetailsViewModel(){
+                Body = item.Body,
+                Community = item.Community,
+                CommunityId = item.CommunityId,
+                CreatedAt = item.CreatedAt,
+                CreatedBy = item.CreatedBy,
+                Id = item.Id,
+                RelatedTime = Helper.ConvertToRelativeDateTime(item.CreatedAt),
+                Title = item.Title,
+                Upvotes = item.Upvotes,
+                User = item.User,
+                commentCount = _commentService.GetAll(comment =>comment.PostId == item.Id).Count()
+            }).ToList();
+        }
+
+        
+        
 
     }
 }

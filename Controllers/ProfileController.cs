@@ -13,7 +13,9 @@ using Microsoft.Extensions.Options;
 using Forum.Web.Models;
 using Forum.Web.Models.ManageViewModels;
 using Forum.Web.Services;
-using ProfileViewModels;
+using ForumViewModels;
+using ForumViewModels.ProfileViewModels;
+using Extensions;
 
 namespace Forum.Web.Controllers
 {
@@ -32,18 +34,16 @@ namespace Forum.Web.Controllers
             _postService = postService;
             _commentService = commentService;
         }
-        public IActionResult Index(){
-    
-            return View();
-        }
 
-        public async Task<IActionResult> Details(string userId){    
-            var vm = new ProfileDetailsViewModel() 
+        public async Task<IActionResult> Details(string username){    
+            var user = await _userManager.FindByNameAsync(username);
+            var posts = _postService.GetAll().Where(p => p.CreatedBy == user.Id).OrderByDescending(a => a.CreatedAt).Take(20).ToList();
+            var vm = new ProfileDetailsViewModel()
             {
-                User = await _userManager.FindByIdAsync(userId),
-                CreatedCommunities = _communityService.GetAll().Where(p => p.CreatedBy == userId),
-                Comments = _commentService.GetAll().Where(p => p.CreatedBy == userId),
-                Posts = _postService.GetAll().Where(p => p.CreatedBy == userId)
+                User = user,
+                CreatedCommunities = _communityService.GetAll().Where(p => p.CreatedBy == user.Id).ToList(),
+                Comments = _commentService.GetAll().Where(p => p.CreatedBy == user.Id).ToList(),
+                Posts = posts.ConvertToProfilePostDetailsViewModel(_commentService)
             };
 
             return View(vm);
