@@ -1,0 +1,106 @@
+@model ForumViewModels.ProfileViewModels.ProfileDetailsViewModel
+
+<div class="row">
+    <div class="col-sm-6">
+        <h1>u/@Model.User.UserName</h1>
+        @if (User.Identity.IsAuthenticated) 
+        {
+            <button id="btnSubscribe" type="button" class="btn btn-primary">Follow</button>
+        }
+    </div>
+    <div class="col-sm-6">
+        <h3>About</h3>
+
+            <ul>
+                <li>Joined:</li>
+                <li>Upvotes:</li>
+                <li>Followers:</li>
+                <li>Subcribed Communities:</li>
+            </ul>
+    </div>
+</div>
+
+
+
+
+
+<h3>Posts</h3>
+@if(Model.Posts.Any())
+{
+    foreach(var post in @Model.Posts)
+    {
+        <div class="post_row">
+        <div class="row">
+            <div class="col-xs-2" >
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="col-xs-3" >
+                        <div class="arrows">
+                            <a href="#" class="btnPostUpvote" data-id="@post.Id"> <i class="fa fa-arrow-up"></i></a>
+                            
+                                <br />                                    
+                                    <span class="postUpvote-@post.Id">@post.Upvotes</span>
+                                <br />
+
+                            <a href="#" class="btnPostDownvote" data-id="@post.Id"> <i class="fa fa-arrow-down"></i></a>
+                        </div>
+                    </div>
+                }
+
+                <div class="col-xs-6" class="">
+                    <img src="~/images/post.png" class="img img-thumbnail post_image" width="60" height="60" />
+                </div>
+
+            </div>
+            <div class="col-xs-10" >
+                <div class="post">
+                    <div class="title">
+                        <a asp-controller="Post" asp-action="Details" asp-route-id="@post.Id">@post.Title</a>
+                    </div>
+                    <div class="body">
+                        <span class="post_time">@post.RelatedTime</span> by
+                        <span class="user"><a href="#">@post.User.UserName</a></span> from
+                        <span class="community"><a asp-controller="Community" asp-action="Details" asp-route-id="@post.CommunityId">r/@post.Community.Name</a></span>
+                    </div>
+                    <div class="footer">
+                        <span> <a asp-controller="Post" asp-action="Details" asp-route-id="@post.Id">@post.commentCount comments</a> </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    }
+}
+
+<h3>Created Communities</h3>
+@if(Model.CreatedCommunities.Any())
+{
+    foreach(var community in @Model.CreatedCommunities)
+    {   
+        <div>
+            <div class="community_row">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <img src="~/images/post.png" width="50" height="50"/>
+                    </div>
+                    <div class="col-sm-10">
+                        <p> <a asp-controller="Community" asp-action="Details" asp-route-id="@community.Id">@community.Name</a> </p>
+                        <p> @community.Description </p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    }
+}
+
+<h3>Comments</h3>
+@if(Model.Comments.Any())
+{
+    foreach(var comment in @Model.Comments)
+    {   
+        //
+    }
+}

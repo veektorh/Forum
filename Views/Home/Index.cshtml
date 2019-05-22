@@ -1,0 +1,77 @@
+﻿@model HomeViewModels.HomeIndexViewModel
+
+@{
+ViewData["Title"] = "Home Page";
+}
+<style>
+    
+</style>
+
+@if(!Model.Posts.Any()){
+
+    <div class="alert alert-danger alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+        <p><i class="icon fa fa-ban"></i> No Posts </p>
+    </div>
+
+}
+@if(User.Identity.IsAuthenticated)
+{
+    <a class="btn btn-primary" asp-controller="Post" asp-action="create">Create One</a>
+}
+
+
+
+@foreach(var post in Model.Posts){
+<div>
+    
+    <div class="post_row">
+        <div class="row">
+            <div class="col-xs-2" >
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="col-xs-3" >
+                        <div class="arrows">
+                            <a href="#" class="btnPostUpvote" data-id="@post.Id"> <i class="fa fa-arrow-up"></i></a>
+                            
+                                <br />                                    
+                                    <span class="postUpvote-@post.Id">@post.Upvotes</span>
+                                <br />
+
+                            <a href="#" class="btnPostDownvote" data-id="@post.Id"> <i class="fa fa-arrow-down"></i></a>
+                        </div>
+                    </div>
+                }
+                
+
+
+                <div class="col-xs-6" class="">
+                    <img src="~/images/post.png" class="img img-thumbnail post_image" width="60" height="60" />
+                </div>
+
+            </div>
+            <div class="col-xs-10" >
+                <div class="post">
+                    <div class="title">
+                        <a asp-controller="Post" asp-action="Details" asp-route-id="@post.Id">@post.Title</a>
+                    </div>
+                    <div class="body">
+                        <span class="post_time">@post.RelatedTime</span> by
+                        <span class="user"><a asp-controller="Profile" asp-action="Details" asp-route-username="@post.User.UserName">@post.User.UserName</a></span> from
+                        <span class="community"><a asp-controller="Community" asp-action="Details" asp-route-id="@post.CommunityId">r/@post.Community.Name</a></span>
+                    </div>
+                    <div class="footer">
+                        <span> <a asp-controller="Post" asp-action="Details" asp-route-id="@post.Id">@post.commentCount comments</a> </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+}
+
+
+

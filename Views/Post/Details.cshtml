@@ -1,0 +1,186 @@
+@model PostViewModels.PostDetailsViewModel
+
+<h1>@Model.Post.Community.Name</h1>
+
+
+
+<div class="post_row">
+        <div class="row">
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="col-xs-1" >
+                    <div class="arrows">
+                        <a href="#" class="btnPostUpvote" data-id="@Model.Post.Id"> <i class="fa fa-arrow-up"></i></a>
+                        <br />
+                        <span class="postUpvote-@Model.Post.Id">@Model.Post.Upvotes</span>
+                        <br />
+                        <a href="#" class="btnPostDownvote" data-id="@Model.Post.Id"> <i class="fa fa-arrow-down"></i></a>
+                    </div>
+                </div>
+            }
+            
+
+            <div class="col-xs-11" style="">
+                <div class="post">
+                    <div class="title">
+                        <a href="#" class="post_details_title">@Model.Post.Title</a><br/>
+                        <span class="post_details_time">@Model.Post.RelatedTime by</span> 
+                        <span class="post_details_user"><a asp-controller="Profile" asp-action="Details" asp-route-username="@Model.Post.User.UserName">@Model.Post.User.UserName</a> from</span> 
+                        <span class="post_details_community"><a asp-controller="Community" asp-action="Details" asp-route-id="@Model.Post.CommunityId">r/@Model.Post.Community.Name</a></span>
+                        
+                    </div>
+                    @if(!string.IsNullOrEmpty(Model.Post.Body))
+                    {
+                        <div class="post_details_body">
+                            <p>
+                                @Model.Post.Body
+                            </p>
+                        </div>
+                    }
+                    
+                    <div class="footer">
+                        <span> <a href="#">@Model.Post.commentCount comments</a> </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+@if(User.Identity.IsAuthenticated)
+{
+<div>
+    
+    <textarea class="form-control" name="comment" id="comment"></textarea> <br/>
+    <input type="submit" id="btnAddComment" value="Add comment"/>
+    
+    
+</div>
+}
+
+<br/><br/>
+@if(!Model.Comments.Any())
+{
+    <p> No comments on this post </p>
+}
+
+
+
+<div id="target">
+    Loading...
+</div>
+
+@section Scripts{
+    
+
+    <script>
+        
+        var postId = @Model.Post.Id;
+
+        $(document).ready(function(){
+            RefreshComment();
+        });
+
+        $("#btnAddComment").click(function(e){
+
+            e.preventDefault();
+            var comment = $("#comment").val().trim();
+
+            if(comment == '' || comment == undefined){
+                alert("please fill in all field");
+                return;
+            }
+            var data = {
+                id : postId,
+                comment : comment
+            };
+
+            $.post("/post/AddComment", data , (res)=>{
+                if(res){
+                    RefreshComment();
+                    $("#comment").val('');
+                    return;
+                }
+                alert("An Error Occured!");
+            });
+            
+        });
+        
+        
+        function RefreshComment(){
+
+            getComments(postId, function (result) {
+                var template = $("#template").html();
+                var data = result
+                
+                Mustache.parse(template);
+
+                var rendered = Mustache.render(template, data);
+
+                $("#target").html(rendered);
+            });
+
+        }     
+
+        function getComments(postId,callback) {            
+            $.ajax({
+                type: 'GET',
+                url:'/post/GetCommentsJson/'+ postId,
+                data: { },
+                cache: false,
+                success: function (data) {                    
+                    callback(data);
+                }
+            });
+            
+        }
+
+        
+
+        
+
+    </script>
+
+
+    <script id="template" type="x-tmpl-mustache">
+        {{#comments}}
+
+        <div class="post_row">
+            <div class="row">
+                @if(User.Identity.IsAuthenticated){
+                    
+                    <div class="col-xs-2" >
+                        <div class="arrows">
+                                <a href="#" class="btnCommentUpvote" data-id="{{id}}"> <i class="fa fa-arrow-up"></i></a>
+                                <br />
+                                <span class="commentUpvote-{{id}}">{{upvotes}}</span>
+                                <br />
+                                <a href="#" class="btnCommentDownvote" data-id="{{id}}"> <i class="fa fa-arrow-down"></i></a>
+                                
+                        </div>               
+                    </div>
+                }
+                <div class="col-xs-10">
+                    <div class="">
+                        <div class="">
+                            <a asp-controller="Profile" asp-action="Details" asp-route-username="{{user.email}}">{{user.email}}</a>
+                            <p>{{body}}</p>
+                        </div>
+                        <div class="">
+                            <span class=""> {{relatedtime}} </span> 
+                        </div>
+                        <div class="footer">
+                            
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {{/comments}}
+    
+    </script>
+}
