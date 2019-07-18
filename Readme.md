@@ -14,7 +14,7 @@ These instructions will get you a copy of the project up and running on your loc
 ## Built With
 
 * [Asp.Net Core](https://docs.microsoft.com/en-us/aspnet/core/) - Web Framework
-* [Sqlite](https://www.sqlite.org) - Database
+* [Postgres](https://www.postgresql.org/)- Database
 
 
 ## Contributing
