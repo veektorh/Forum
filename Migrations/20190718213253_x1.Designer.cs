@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Forum.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190718210716_x1")]
+    [Migration("20190718213253_x1")]
     partial class x1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
